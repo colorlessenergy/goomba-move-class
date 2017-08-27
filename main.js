@@ -19,7 +19,9 @@ function sprite (options) {
       tickCount = 0,
       ticksPerFrame = options.ticksPerFrame,
       numberOfFrames = options.numberOfFrames || 0,
-      vel = {x: 0, y: 0}
+      vel = {x: 0, y: 0},
+      movement = 0;
+
 
   that.context = options.context;
   that.width = options.width;
@@ -28,10 +30,18 @@ function sprite (options) {
 
   that.update = function () {
     tickCount += 1;
-    vel.x++;
 
     if (vel.x + that.width > canvas.width) {
-      vel.x = 0;
+      movement = -1;
+    } else if (vel.x === 0) {
+      movement = 1;
+    }
+
+    console.log(movement);
+    if (movement === -1) {
+      vel.x--
+    } else {
+      vel.x++
     }
 
     if (tickCount > ticksPerFrame) {
