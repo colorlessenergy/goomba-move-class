@@ -19,6 +19,9 @@ class Player {
     this.context = canvas.getContext("2d");
     this.movement = 0;
 
+    document.addEventListener("keydown", function (event) {
+      player.move(event);
+    })
   }
 
   gameLoop() {
@@ -47,26 +50,47 @@ class Player {
   update() {
     this.tickCount += 1;
 
-    if (this.vel.x + 70 > this.canvas.width) {
-      this.movement = -1;
-    } else if (this.vel.x === 0) {
-      this.movement = 1;
-    }
+    // if (this.vel.x + 70 > this.canvas.width) {
+    //   this.movement = -1;
+    // } else if (this.vel.x === 0) {
+    //   this.movement = 1;
+    // }
+    //
+    // if (this.movement === -1) {
+    //   this.vel.x--
+    // } else {
+    //   this.vel.x++
+    // }
 
-    if (this.movement === -1) {
-      this.vel.x--
-    } else {
+    // if (this.tickCount > this.ticksPerFrame) {
+    //   this.tickCount = 0;
+    //
+    //   if (this.frameIndex < this.numberOfFrames - 1) {
+    //     this.frameIndex += 1;
+    //   } else {
+    //     this.frameIndex = 0;
+    //   }
+    // }
+  }
+
+  move(event) {
+    switch (event.keyCode) {
+      case 39:
       this.vel.x++
-    }
-
-    if (this.tickCount > this.ticksPerFrame) {
-      this.tickCount = 0;
-
-      if (this.frameIndex < this.numberOfFrames - 1) {
+      if (this.frameIndex === 0) {
         this.frameIndex += 1;
-      } else {
-        this.frameIndex = 0;
+      } else if (this.frameIndex === 1) {
+        this.frameIndex -= 1;
       }
+      break;
+      case 37:
+      this.vel.x--;
+      if (this.frameIndex === 1) {
+        this.frameIndex -= 1;
+      } else if (this.frameIndex === 0) {
+        this.frameIndex += 1;
+      }
+      break;
     }
   }
 }
