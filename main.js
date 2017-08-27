@@ -1,13 +1,15 @@
 var coin,
-    coinImage,
+    goomba,
     canvas;
 
 function gameLoop() {
 
    window.requestAnimationFrame(gameLoop);
-
    coin.update();
+
    coin.render();
+
+
  }
 
 
@@ -16,7 +18,8 @@ function sprite (options) {
       frameIndex = 0,
       tickCount = 0,
       ticksPerFrame = options.ticksPerFrame,
-      numberOfFrames = options.numberOfFrames || 0;
+      numberOfFrames = options.numberOfFrames || 0,
+      vel = {x: 0, y: 0}
 
   that.context = options.context;
   that.width = options.width;
@@ -25,6 +28,11 @@ function sprite (options) {
 
   that.update = function () {
     tickCount += 1;
+    vel.x++;
+
+    if (vel.x + that.width > canvas.width) {
+      vel.x = 0;
+    }
 
     if (tickCount > ticksPerFrame) {
       tickCount = 0;
@@ -38,15 +46,16 @@ function sprite (options) {
   };
 
   that.render = function () {
-    that.context.clearRect(0, 0, that.width, that.height);
+
+    that.context.clearRect(0, 0, canvas.width, canvas.height);
 
     that.context.drawImage(
       that.image,
       frameIndex * that.width / numberOfFrames,
-      0,
+      374,
       that.width / numberOfFrames,
       that.height,
-      0,
+      vel.x,
       0,
       that.width / numberOfFrames,
       that.height);
@@ -54,20 +63,20 @@ function sprite (options) {
   return that;
 }
 
-canvas = document.getElementById("coinAnimation");
-canvas.width = 100;
+canvas = document.getElementById("goomba");
+canvas.width = 500;
 canvas.height = 100;
 
-coinImage = new Image();
+goomba = new Image();
 
 coin = sprite({
   context: canvas.getContext("2d"),
-  width: 1000,
-  height: 100,
-  image: coinImage,
-  numberOfFrames: 10,
+  width: 70,
+  height: 32,
+  image: goomba,
+  numberOfFrames: 2,
   ticksPerFrame: 4
 })
 
-coinImage.addEventListener("load", gameLoop);
-coinImage.src = "images/coin-sprite-animation.png";
+goomba.addEventListener("load", gameLoop);
+goomba.src = "images/sheet.png";
